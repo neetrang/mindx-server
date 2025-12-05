@@ -1,9 +1,9 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is the server side of the lms platform",
   "license": "ISC",
-  "author": "Mai Trang",
+  "author": "Sujal verma",
   "type": "commonjs",
   "main": "build/server.js",
   "engines":{
