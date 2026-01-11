@@ -107,7 +107,7 @@ export const createOrder = CatchAsyncError(
       await course.save();
 
       /* ===== Tạo order ===== */
-     await (newOrder as any)(orderData, res);
+      await (newOrder as any)(orderData, res);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
