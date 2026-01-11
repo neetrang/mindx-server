@@ -27,7 +27,5 @@ courseRouter.post('/getVdoCipherOTP',generateVideoUrl);
 
 
 
-
-
 export default courseRouter;
 

@@ -10,4 +10,6 @@ const user_controller_1 = require("../controllers/user.controller");
 const orderRouter = express_1.default.Router();
 orderRouter.post("/create-order", user_controller_1.updateAccessToken, auth_1.isAuthenticated, order_controller_1.createOrder);
 orderRouter.get("/get-orders", user_controller_1.updateAccessToken, auth_1.isAuthenticated, (0, auth_1.authorizeRoles)("admin"), order_controller_1.getAllOrders);
+orderRouter.get("/payment/stripepublishablekey", order_controller_1.sendStripePublishableKey);
+orderRouter.post("/payment", auth_1.isAuthenticated, order_controller_1.newPayment);
 exports.default = orderRouter;

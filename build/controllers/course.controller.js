@@ -16,6 +16,7 @@ const path_1 = __importDefault(require("path"));
 const sendMail_1 = __importDefault(require("../utils/sendMail"));
 const notification_model_1 = __importDefault(require("../models/notification.model"));
 const axios_1 = __importDefault(require("axios"));
+// Upload khóa học
 exports.uploadCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const data = req.body;
@@ -35,7 +36,7 @@ exports.uploadCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, 
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-//edit course
+// Sửa khóa học
 exports.editCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const data = req.body;
@@ -44,9 +45,7 @@ exports.editCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, ne
         const courseData = await course_model_1.default.findById(courseId);
         if (thumbnail && !thumbnail.startsWith("https")) {
             await cloudinary_1.default.v2.uploader.destroy(courseData.thumbnail.public_id);
-            const myCloud = await cloudinary_1.default.v2.uploader.upload(thumbnail, {
-                folder: "courses",
-            });
+            const myCloud = await cloudinary_1.default.v2.uploader.upload(thumbnail, { folder: "courses" });
             data.thumbnail = {
                 public_id: myCloud.public_id,
                 url: myCloud.secure_url,
@@ -58,10 +57,8 @@ exports.editCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, ne
                 url: courseData?.thumbnail.url,
             };
         }
-        const course = await course_model_1.default.findByIdAndUpdate(courseId, {
-            $set: data,
-        }, { new: true });
-        await redis_1.redis.set(courseId, JSON.stringify(course)); // update course in redis
+        const course = await course_model_1.default.findByIdAndUpdate(courseId, { $set: data }, { new: true });
+        await redis_1.redis.set(courseId, JSON.stringify(course)); // cập nhật khóa học trong redis
         res.status(201).json({
             success: true,
             course,
@@ -71,7 +68,7 @@ exports.editCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, ne
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-// get single course (without purchasing)
+// Lấy 1 khóa học (không cần mua)
 exports.getSingleCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const courseId = req.params.id;
@@ -84,8 +81,9 @@ exports.getSingleCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, re
             });
         }
         else {
-            const course = await course_model_1.default.findById(req.params.id).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
-            await redis_1.redis.set(courseId, JSON.stringify(course), 'EX', 604800); // update course in redis
+            const course = await course_model_1.default.findById(req.params.id)
+                .select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
+            await redis_1.redis.set(courseId, JSON.stringify(course), 'EX', 604800); // cập nhật khóa học trong redis 7 ngày
             res.status(200).json({
                 success: true,
                 course
@@ -96,7 +94,7 @@ exports.getSingleCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, re
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-// get ALL course (without purchasing)
+// Lấy tất cả khóa học (không cần mua)
 exports.getAllCourses = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const courses = await course_model_1.default.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
@@ -109,14 +107,14 @@ exports.getAllCourses = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res,
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
-// get courses with valid user
+// Lấy khóa học của người dùng đã mua
 exports.getCourseByUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const getUserCourseList = req.user?.courses;
         const courseId = req.params.id;
         const courseExists = getUserCourseList?.find((course) => course._id.toString() === courseId);
         if (!courseExists) {
-            return next(new ErrorHandler_1.default("You are not eligible to access this course", 404));
+            return next(new ErrorHandler_1.default("Bạn không có quyền truy cập khóa học này", 404));
         }
         const course = await course_model_1.default.findById(courseId);
         const content = course?.courseData;
@@ -134,26 +132,23 @@ exports.addQuestion = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, n
         const { question, courseId, contentId } = req.body;
         const course = await course_model_1.default.findById(courseId);
         if (!mongoose_1.default.Types.ObjectId.isValid(contentId)) {
-            return next(new ErrorHandler_1.default("Invalid content id", 400));
+            return next(new ErrorHandler_1.default("ID nội dung không hợp lệ", 400));
         }
         const courseContent = course?.courseData?.find((item) => item._id.equals(contentId));
         if (!courseContent) {
-            return next(new ErrorHandler_1.default("Invalid content id", 400));
+            return next(new ErrorHandler_1.default("ID nội dung không hợp lệ", 400));
         }
-        // create a new question
         const newQuestion = {
             user: req.user,
             question,
             questionReplies: [],
         };
-        //add this question to our course content
         courseContent.questions.push(newQuestion);
         await notification_model_1.default.create({
             user: req.user?._id,
-            title: "New Question Recieved",
-            message: `New question in course ${course?.name}`,
+            title: "Câu hỏi mới",
+            message: `Có câu hỏi mới trong khóa học ${course?.name}`,
         });
-        //save the course
         await course?.save();
         res.status(201).json({
             success: true,
@@ -169,45 +164,38 @@ exports.addAnswer = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, nex
         const { answer, courseId, contentId, questionId } = req.body;
         const course = await course_model_1.default.findById(courseId);
         if (!mongoose_1.default.Types.ObjectId.isValid(contentId)) {
-            return next(new ErrorHandler_1.default("Invalid content id", 400));
+            return next(new ErrorHandler_1.default("ID nội dung không hợp lệ", 400));
         }
         const courseContent = course?.courseData?.find((item) => item._id.equals(contentId));
         if (!courseContent) {
-            return next(new ErrorHandler_1.default("Invalid content id", 400));
+            return next(new ErrorHandler_1.default("ID nội dung không hợp lệ", 400));
         }
         const question = courseContent.questions.find((item) => item._id.equals(questionId));
         if (!question) {
-            return next(new ErrorHandler_1.default("Invalid question id", 400));
+            return next(new ErrorHandler_1.default("ID câu hỏi không hợp lệ", 400));
         }
-        // create a new answer
         const newAnswer = {
             user: req.user,
             answer,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
         };
-        //add this answer to our question
         question.questionReplies.push(newAnswer);
-        //save the course
         await course?.save();
         if (req.user?._id === question.user._id) {
-            // create notifiction
             await notification_model_1.default.create({
                 user: req.user?._id,
-                title: "New Question Reply Recieved",
-                message: `New reply in your question in course ${courseContent?.title}`,
+                title: "Trả lời câu hỏi mới",
+                message: `Có trả lời mới cho câu hỏi của bạn trong khóa học ${courseContent?.title}`,
             });
         }
         else {
-            const data = {
-                name: question.user.name,
-                title: courseContent.title
-            };
+            const data = { name: question.user.name, title: courseContent.title };
             const html = await ejs_1.default.renderFile(path_1.default.join(__dirname, "../mails/question-reply.ejs"), data);
             try {
                 await (0, sendMail_1.default)({
                     email: question.user.email,
-                    subject: "Question Reply",
+                    subject: "Trả lời câu hỏi",
                     template: "question-reply.ejs",
                     data,
                 });
@@ -229,38 +217,27 @@ exports.addReview = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, nex
     try {
         const userCourseList = req.user?.courses;
         const courseId = req.params.id;
-        // check if courseId already exists in userCourseList based on _id
         const courseExists = userCourseList?.some((course) => course._id.toString() === courseId.toString());
         if (!courseExists) {
-            return next(new ErrorHandler_1.default("You are not eligible to access this course", 404));
+            return next(new ErrorHandler_1.default("Bạn không có quyền đánh giá khóa học này", 404));
         }
         const course = await course_model_1.default.findById(courseId);
         const { review, rating } = req.body;
-        const reviewData = {
-            user: req.user,
-            rating,
-            comment: review,
-        };
+        const reviewData = { user: req.user, rating, comment: review };
         course?.reviews.push(reviewData);
         let avg = 0;
-        course?.reviews.forEach((rev) => {
-            avg += rev.rating;
-        });
+        course?.reviews.forEach((rev) => { avg += rev.rating; });
         if (course) {
-            course.ratings = avg / course.reviews.length; // one example we have 2 reviews one is 5 another one is 4 so math working like this = 9 / 2  = 4.5 ratings
+            course.ratings = avg / course.reviews.length;
         }
         await course?.save();
-        await redis_1.redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
-        // create notification
+        await redis_1.redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7 ngày
         await notification_model_1.default.create({
             user: req.user?._id,
-            title: "New Review Received",
-            message: `${req.user?.name} has given a review in ${course?.name}`,
+            title: "Đánh giá mới",
+            message: `${req.user?.name} đã đánh giá khóa học ${course?.name}`,
         });
-        res.status(200).json({
-            success: true,
-            course,
-        });
+        res.status(200).json({ success: true, course });
     }
     catch (error) {
         return next(new ErrorHandler_1.default(error.message, 500));
@@ -270,34 +247,24 @@ exports.addReplyToReview = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, r
     try {
         const { comment, courseId, reviewId } = req.body;
         const course = await course_model_1.default.findById(courseId);
-        if (!course) {
-            return next(new ErrorHandler_1.default("Course not found", 404));
-        }
+        if (!course)
+            return next(new ErrorHandler_1.default("Khóa học không tồn tại", 404));
         const review = course?.reviews?.find((rev) => rev._id.toString() === reviewId);
-        if (!review) {
-            return next(new ErrorHandler_1.default("Review not found", 404));
-        }
-        const replyData = {
-            user: req.user,
-            comment,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        };
-        if (!review.commentReplies) {
-            review.commentReplies = []; // if there is no reply yet create an empty array for it  // this is a good practice to always initialize array when adding new field in mongoose schema  // if we don't initialize it mongoose will add it as empty array and we will have to check if its empty or not before pushing new data  // this is a good practice to always initialize array when adding new field in mongoose schema  // this is a good practice to always initialize array when adding new field in mongoose schema  // this is a good practice to always initialize array when adding new field in mongoose schema  // this is a good practice to always initialize array when adding new field in mongoose schema  // this is a good practice to always initialize array when adding new field in mongoose schema  // this is a good practice to always initialize array when adding new field in mongoose schema  // this is a good practice to always initialize array when adding new field in mongoose schema  // this is
-        }
+        if (!review)
+            return next(new ErrorHandler_1.default("Đánh giá không tồn tại", 404));
+        const replyData = { user: req.user, comment, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+        if (!review.commentReplies)
+            review.commentReplies = [];
         review.commentReplies?.push(replyData);
         await course?.save();
         await redis_1.redis.set(courseId, JSON.stringify(course), "EX", 604800);
-        res.status(200).json({
-            success: true,
-            course,
-        });
+        res.status(200).json({ success: true, course });
     }
     catch (error) {
         return next(new ErrorHandler_1.default(error.message, 500));
     }
 });
+// Lấy tất cả khóa học cho admin
 exports.getAdminAllCourses = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         (0, course_service_1.getAllCoursesService)(res);
@@ -306,24 +273,22 @@ exports.getAdminAllCourses = (0, catchAsyncErrors_1.CatchAsyncError)(async (req,
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
+// Xóa khóa học
 exports.deleteCourse = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { id } = req.params;
         const course = await course_model_1.default.findById(id);
-        if (!course) {
-            return next(new ErrorHandler_1.default("course not found", 404));
-        }
+        if (!course)
+            return next(new ErrorHandler_1.default("Khóa học không tồn tại", 404));
         await course.deleteOne({ id });
         await redis_1.redis.del(id);
-        res.status(200).json({
-            success: true,
-            message: "course deleted successfully",
-        });
+        res.status(200).json({ success: true, message: "Khóa học đã được xóa" });
     }
     catch (error) {
         return next(new ErrorHandler_1.default(error.message, 400));
     }
 });
+// Tạo URL video
 exports.generateVideoUrl = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, next) => {
     try {
         const { videoId } = req.body;

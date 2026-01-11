@@ -6,20 +6,20 @@
   "author": "Sujal verma",
   "type": "commonjs",
   "main": "build/server.js",
-  "engines":{
+  "engines": {
     "node": "18.x"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only server.ts",
     "start": "node build/server.js",
-    "build":"tsc"
+    "build": "tsc"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
+    "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^22.13.0",
     "@types/node-cron": "^3.0.11",
@@ -32,14 +32,15 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
-    "express": "^4.21.2",
+    "express": "^4.22.1",
     "express-rate-limit": "^7.5.0",
     "ioredis": "^5.4.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.6",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.10.0",
-    "socket.io": "^4.8.1",
+    "socket.io": "^4.8.3",
+    "stripe": "^20.1.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.3"
   },
