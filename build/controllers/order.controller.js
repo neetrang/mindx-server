@@ -69,9 +69,10 @@ exports.createOrder = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, n
             });
         }
         /* ===== Cập nhật user ===== */
-        user?.courses.push(course._id);
+        const courseid = course?._id;
+        user?.courses.push(courseid);
+        await redis_1.redis.set(req.user?._id, JSON.stringify(user));
         await user?.save();
-        await redis_1.redis.set(req.user?._id.toString(), JSON.stringify(user));
         /* ===== Tạo thông báo ===== */
         await notification_model_1.default.create({
             user: user?._id,
@@ -82,7 +83,7 @@ exports.createOrder = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, n
         course.purchased += 1;
         await course.save();
         /* ===== Tạo order ===== */
-        (0, order_service_1.newOrder)(orderData, res, next);
+        await order_service_1.newOrder(orderData, res);
     }
     catch (error) {
         return next(new ErrorHandler_1.default(error.message, 400));

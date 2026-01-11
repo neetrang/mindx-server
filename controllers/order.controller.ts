@@ -90,10 +90,10 @@ export const createOrder = CatchAsyncError(
       }
 
       /* ===== Cập nhật user ===== */
-      user?.courses.push(course._id);
-      await user?.save();
-
-      await redis.set(req.user?._id.toString(), JSON.stringify(user));
+      const courseid:any=course?._id;
+        user?.courses.push(courseid);
+        await redis.set(req.user?._id,JSON.stringify(user));
+        await user?.save();
 
       /* ===== Tạo thông báo ===== */
       await NotificationModel.create({
@@ -107,7 +107,7 @@ export const createOrder = CatchAsyncError(
       await course.save();
 
       /* ===== Tạo order ===== */
-      newOrder(orderData, res, next);
+     await (newOrder as any)(orderData, res);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
