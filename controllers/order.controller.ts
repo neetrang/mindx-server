@@ -92,7 +92,10 @@ export const createOrder = CatchAsyncError(
       /* ===== Cập nhật user ===== */
       const courseid:any=course?._id;
         user?.courses.push(courseid);
-        await redis.set(req.user?._id,JSON.stringify(user));
+        const userId = req.user?._id?.toString();
+        if (userId) {
+          await redis.set(userId, JSON.stringify(user));
+        }
         await user?.save();
 
       /* ===== Tạo thông báo ===== */

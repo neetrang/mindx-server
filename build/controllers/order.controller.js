@@ -71,7 +71,10 @@ exports.createOrder = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, n
         /* ===== Cập nhật user ===== */
         const courseid = course?._id;
         user?.courses.push(courseid);
-        await redis_1.redis.set(req.user?._id, JSON.stringify(user));
+        const userId = req.user?._id?.toString();
+        if (userId) {
+            await redis_1.redis.set(userId, JSON.stringify(user));
+        }
         await user?.save();
         /* ===== Tạo thông báo ===== */
         await notification_model_1.default.create({

@@ -113,7 +113,7 @@ exports.logoutUser = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res, ne
         res.cookie("refresh_token", "", { maxAge: 1 });
         const userId = req.user?._id || "";
         //delete the user info from redis database
-        redis_1.redis.del(userId);
+        redis_1.redis.del(String(userId));
         res.status(200).json({ success: true, message: "Loggesd out successfully" });
     }
     catch (error) {
@@ -183,7 +183,7 @@ exports.updateUserInfo = (0, catchAsyncErrors_1.CatchAsyncError)(async (req, res
             user.name = name;
         }
         await user?.save();
-        await redis_1.redis.set(userId, JSON.stringify(user));
+        await redis_1.redis.set(String(userId), JSON.stringify(user));
         res.status(201).json({
             success: true,
             user,
@@ -246,7 +246,7 @@ exports.updateProfilePicture = (0, catchAsyncErrors_1.CatchAsyncError)(async (re
             }
         }
         await user?.save();
-        await redis_1.redis.set(userId, JSON.stringify(user));
+        await redis_1.redis.set(String(userId), JSON.stringify(user));
         res.status(200).json({
             success: true,
             user,

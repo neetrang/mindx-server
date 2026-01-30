@@ -1,155 +1,186 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
   <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xác nhận đơn hàng MindX</title>
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <title>Order Confirmation</title>
+
     <style>
       body {
-        font-family: "Poppins", sans-serif;
-        background-color: #f4f4f4;
         margin: 0;
         padding: 0;
+        background-color: #f3f4f6;
+        font-family: "Inter", sans-serif;
+        color: #111827;
       }
-      .container {
+
+      .wrapper {
         max-width: 600px;
-        height: 100vh;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #4f5ef1;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 40px auto;
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      }
+
+      .header {
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        padding: 32px;
+        text-align: center;
         color: #ffffff;
       }
-      .message-sm {
-        text-align: center;
-        font-size: 18px;
-        margin-bottom: 20px;
-        padding-top: 50px;
+
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
       }
-      .message-sm > h1 {
-        text-align: center;
-        font-size: 25px;
-        font-weight: 600;
+
+      .content {
+        padding: 32px;
       }
-      .course-info {
-        margin: auto;
-        padding: 20px 0px;
-        width: 100%;
-        background-color: #fff;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        box-shadow: 2px 2px 2px 2px rgba(206, 197, 197, 0.1);
-        color: #000;
-      }
-      .course-info > h4 {
-        color: #23bd70;
-        font-size: 22px;
-        font-weight: 500;
-        text-align: center;
-      }
-      .first-td {
-        text-transform: uppercase;
-        color: #0000006c;
-        font-size: 16px;
-        padding: 5px 0px;
-        font-weight: 600;
-      }
-      .second-td {
-        font-weight: 500;
-        color: #000000af;
+
+      .content p {
         font-size: 15px;
+        line-height: 1.6;
+        margin: 0 0 16px;
+        color: #374151;
       }
+
+      .card {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      .card h3 {
+        margin: 0 0 12px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #111827;
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
+        font-size: 14px;
       }
+
       td {
-        padding: 10px;
-        text-align: center;
+        padding: 8px 0;
       }
-      td.col-2 {
-        width: 100%;
-        text-align: left;
-        padding: 0px;
+
+      .label {
+        color: #6b7280;
       }
-      .table-row {
-        width: 70%;
-        display: block;
-        margin: auto;
-        padding: 10px 0;
+
+      .value {
+        text-align: right;
+        font-weight: 500;
       }
+
+      .total {
+        font-weight: 700;
+        font-size: 16px;
+      }
+
       .footer {
         text-align: center;
-        margin-top: 100px;
-        color: #fff;
+        padding: 24px;
+        background-color: #f9fafb;
+        font-size: 13px;
+        color: #6b7280;
       }
-      .footer > p > a {
+
+      .footer a {
+        color: #4f46e5;
         text-decoration: none;
-        color: #fff;
+        font-weight: 500;
       }
     </style>
   </head>
 
   <body>
-    <div class="container">
-      <div class="message-sm">
-        <h1>Đơn hàng MindX của bạn đã được xác nhận!</h1>
-        <p>Và chúng tôi cũng phấn khích như bạn vậy.</p>
+    <div class="wrapper">
+      <!-- HEADER -->
+      <div class="header">
+        <h1>🎉 Đơn hàng đã được xác nhận!</h1>
       </div>
 
-      <br /><br />
+      <!-- CONTENT -->
+      <div class="content">
+        <p>Chào bạn 👋,</p>
 
-      <div class="course-info">
-        <h4>Đây là những gì bạn đã đặt hàng:</h4>
+        <p>
+          Cảm ơn bạn đã tin tưởng và lựa chọn khóa học tại <strong>MindX</strong>.
+          Đơn hàng của bạn đã được thanh toán thành công và khóa học đã sẵn sàng
+          để bạn bắt đầu học ngay!
+        </p>
 
-        <table style="border-bottom: 1px solid #0000002f">
-          <tr>
-            <td>Đơn hàng#: <%= order._id %></td>
-            <td>Ngày đặt: <%= order.date %></td>
-          </tr>
-        </table>
+        <!-- ORDER INFO -->
+        <div class="card">
+          <h3>Thông tin đơn hàng</h3>
 
-        <table style="width: 90%; margin: auto; display: block">
-          <tr>
-            <td class="first-td">Mục</td>
-            <td class="first-td">Số lượng</td>
-            <td class="first-td">Trị giá</td>
-          </tr>
-        </table>
+          <table>
+            <tr>
+              <td class="label">Mã đơn hàng</td>
+              <td class="value">#<%= order._id %></td>
+            </tr>
+            <tr>
+              <td class="label">Ngày mua</td>
+              <td class="value"><%= order.date %></td>
+            </tr>
+          </table>
+        </div>
 
-        <table style="width: 90%; margin: auto; display: block">
-          <tr>
-            <td class="second-td"><%= order.name %></td>
-            <td class="second-td">1</td>
-            <td class="second-td"><%= order.price %></td>
-          </tr>
-        </table>
+        <!-- COURSE INFO -->
+        <div class="card">
+          <h3>Chi tiết khóa học</h3>
 
-        <table class="table-row" style="border-top: 1px solid #00000029">
-          <tr>
-            <td class="col-2">Tổng phụ:</td>
-            <td class="col-2"><%= order.price %></td>
-          </tr>
-        </table>
+          <table>
+            <tr>
+              <td class="label">Khóa học</td>
+              <td class="value"><%= order.name %></td>
+            </tr>
+            <tr>
+              <td class="label">Số lượng</td>
+              <td class="value">1</td>
+            </tr>
+            <tr>
+              <td class="label">Giá</td>
+              <td class="value"><%= order.price %></td>
+            </tr>
+          </table>
 
-        <table class="table-row" style="margin-top: -20px">
-          <tr>
-            <td class="col-2">Tổng cộng:</td>
-            <td class="col-2"><%= order.price %></td>
-          </tr>
-        </table>
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0" />
+
+          <table>
+            <tr>
+              <td class="label total">Tổng cộng</td>
+              <td class="value total"><%= order.price %></td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="margin-top: 24px">
+          👉 Bạn có thể truy cập khóa học ngay trong tài khoản MindX của mình.
+          Chúc bạn học tập hiệu quả và đạt được mục tiêu nhé! 🚀
+        </p>
       </div>
 
+      <!-- FOOTER -->
       <div class="footer">
         <p>
-          Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ:
+          Cần hỗ trợ? Liên hệ
           <a href="mailto:maitrang.071003@gmail.com">maitrang.071003@gmail.com</a>
         </p>
-        <p>&copy; 2026 MindX. Bảo lưu mọi quyền.</p>
+        <p>© 2026 MindX. Bảo lưu mọi quyền.</p>
       </div>
     </div>
   </body>

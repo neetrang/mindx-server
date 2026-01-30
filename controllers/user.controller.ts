@@ -143,7 +143,7 @@ export const logoutUser = CatchAsyncError(async(req:Request,res:Response,next:Ne
         res.cookie("refresh_token","",{maxAge:1});
         const userId=req.user?._id || "";
         //delete the user info from redis database
-        redis.del(userId);
+        redis.del(String(userId))
         res.status(200).json({success:true,message:"Loggesd out successfully"});
     }
     catch(error:any){
@@ -184,8 +184,8 @@ export const updateAccessToken = CatchAsyncError(async(req:Request,res:Response,
 
 export const getUserInfo = CatchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
     try {
-        const userId = req.user?._id;
-        getUserById(userId,res);
+        const userId = req.user?._id as string;
+        getUserById(userId, res);
     }
     catch (error:any) {
         return next(new ErrorHandler(error.message,400));
@@ -233,7 +233,7 @@ export const updateUserInfo = CatchAsyncError(
   
         await user?.save();
   
-        await redis.set(userId, JSON.stringify(user));
+        await redis.set(String(userId), JSON.stringify(user));
   
         res.status(201).json({
           success: true,
@@ -314,7 +314,8 @@ export const updateProfilePicture = CatchAsyncError(
       
             await user?.save();
       
-            await redis.set(userId, JSON.stringify(user));
+            await redis.set(String(userId), JSON.stringify(user));
+
       
             res.status(200).json({
               success: true,
