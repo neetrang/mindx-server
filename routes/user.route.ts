@@ -11,9 +11,14 @@ userRouter.post('/login',loginUser);
 
 userRouter.get('/logout',updateAccessToken,isAuthenticated,logoutUser);
  
-userRouter.get('/refresh',updateAccessToken);
+userRouter.get("/refresh", updateAccessToken, (req, res) => {
+  res.status(200).json({
+    success: true,
+  });
+});
 
-userRouter.get('/me',updateAccessToken,isAuthenticated,getUserInfo);
+
+userRouter.get('/me',isAuthenticated,getUserInfo);
 
 userRouter.post('/social-auth',socialAuth);
 
