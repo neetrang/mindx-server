@@ -22,7 +22,7 @@ app.use(express.json({limit:"50mb"}));
 //cors cross origin resource sharing
 app.use(
     cors({
-        origin: ['http://localhost:3000', 'https://my-learning-7z285loy0-sujals-projects-d94254e2.vercel.app','https://my-learning-sigma.vercel.app'],
+        origin: ['http://localhost:3000'],
         credentials: true,
     })
 );
@@ -60,4 +60,3 @@ app.all("*",(req:Request,res:Response,next:NextFunction)=>{
 app.use(limiter)
 
 app.use(ErrorMiddleware)
-//mongodb+srv://vermasujal16:<db_password>@lms.akoq2.mongodb.net/

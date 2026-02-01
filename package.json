@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "This is the server side of the lms platform",
   "license": "ISC",
-  "author": "Sujal verma",
+  "author": "Mai Trang",
   "type": "commonjs",
   "main": "build/server.js",
   "engines": {
