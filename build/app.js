@@ -23,7 +23,7 @@ exports.app.use((0, cookie_parser_1.default)());
 exports.app.use(express_1.default.json({ limit: "50mb" }));
 //cors cross origin resource sharing
 exports.app.use((0, cors_1.default)({
-    origin: ['http://localhost:3000', 'https://my-learning-7z285loy0-sujals-projects-d94254e2.vercel.app', 'https://my-learning-sigma.vercel.app'],
+    origin: ['http://localhost:3000'],
     credentials: true,
 }));
 const limiter = (0, express_rate_limit_1.rateLimit)({
@@ -56,4 +56,3 @@ exports.app.all("*", (req, res, next) => {
 });
 exports.app.use(limiter);
 exports.app.use(error_1.ErrorMiddleware);
-//mongodb+srv://vermasujal16:<db_password>@lms.akoq2.mongodb.net/
