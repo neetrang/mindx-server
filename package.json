@@ -7,14 +7,14 @@
   "type": "commonjs",
   "main": "build/server.js",
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only server.ts",
     "start": "node build/server.js",
     "build": "tsc"
-  },
+  }
+},
   "dependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.8",
