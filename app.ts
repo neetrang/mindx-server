@@ -26,7 +26,7 @@ app.use(cookieParser());
 // ✅ GIỮ NGUYÊN CORS CỦA BẠN
 app.use(
   cors({
-    origin: ["https://mindx-client.vercel.app"],
+    origin: ['http://localhost:3000', "https://mindx-client.vercel.app"],
     credentials: true,
   })
 );
