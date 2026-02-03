@@ -18,44 +18,44 @@ interface IRegistrationBody{
     avatar?: string;
 }
 
-export const registrationUser = CatchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
-    try {
-        const {name,email,password}=req.body;
-        const isEmailExist=await userModel.findOne({email});
-        if(isEmailExist){
-            return next(new ErrorHandler("Email already exists",400));
-        }
-        const user : IRegistrationBody={
-            name,
-            email,
-            password,
-        };
-        const activationToken = createActivationToken(user);
-        const activationCode  = activationToken.activationCode;
-        const data = {user:{name:user.name},activationCode};
-        const html = await ejs.renderFile(
-            path.join(__dirname, "../mails/activation-mail.ejs"),
-            data
-          );
-        try {
-            await sendMail({
-                email:user.email,
-                subject:"Activate your account",
-                template:"activation-mail.ejs",
-                data,
-            });
-            res.status(201).json({
-                success:true,
-                message:`Please check your email: ${user.email} to activate your account!`,
-                activationToken:activationToken.token,
-            });
-        } catch (error:any) {
-            return next(new ErrorHandler(error.message,400))
-        }
-    } catch (error:any) {
-        return next(new ErrorHandler(error.message,400));
+export const registrationUser = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { name, email, password } = req.body;
+
+    const isEmailExist = await userModel.findOne({ email });
+    if (isEmailExist) {
+      return next(new ErrorHandler("Email already exists", 400));
     }
-});
+
+    const user: IRegistrationBody = { name, email, password };
+
+    const activationToken = createActivationToken(user);
+    const activationCode = activationToken.activationCode;
+
+    const data = {
+      user: { name: user.name },
+      activationCode,
+    };
+
+    // ✅ GỬI MAIL KHÔNG await (KHÔNG BAO GIỜ BLOCK API)
+    sendMail({
+      email: user.email,
+      subject: "Activate your account",
+      template: "activation-mail.ejs",
+      data,
+    }).catch((err) => {
+      console.error("SEND MAIL ERROR:", err);
+    });
+
+    // ✅ TRẢ RESPONSE NGAY
+    return res.status(201).json({
+      success: true,
+      message: `Please check your email: ${user.email} to activate your account!`,
+      activationToken: activationToken.token,
+    });
+  }
+);
+
 
 interface IActivationToken{
     token:string;
