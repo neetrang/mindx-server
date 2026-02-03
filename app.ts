@@ -16,29 +16,28 @@ require("dotenv").config();
 export const app = express();
 
 /* ================== MIDDLEWARE ================== */
-
-// body parser
 app.use(express.json({ limit: "50mb" }));
-
-// cookie parser
 app.use(cookieParser());
 
-// ✅ GIỮ NGUYÊN CORS CỦA BẠN
-app.use(
-  cors({
-    origin: ['http://localhost:3000','https://mindx-client.vercel.app', 'https://mindx-client-9bdminc5t-maitrangs-projects.vercel.app'],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://mindx-client.vercel.app",
+    "https://mindx-client-9bdminc5t-maitrangs-projects.vercel.app"
+  ],
+  credentials: true,
+}));
 
-// rate limit
-const limiter = rateLimit({
+app.options("*", cors()); // 🔥 FIX CORS VERCEL
+
+app.set("trust proxy", 1);
+
+app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 100,
-  standardHeaders: "draft-8",
-  legacyHeaders: false,
-});
-app.use(limiter);
+  skip: (req) => req.method === "OPTIONS",
+}));
+
 
 /* ================== HEALTH CHECK (Render cần) ================== */
 app.get("/healthz", (req: Request, res: Response) => {
