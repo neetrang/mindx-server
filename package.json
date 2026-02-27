@@ -38,6 +38,7 @@
     "mongoose": "^8.9.6",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.10.0",
+    "resend": "^6.9.2",
     "socket.io": "^4.8.3",
     "stripe": "^20.1.0",
     "ts-node-dev": "^2.0.0",
