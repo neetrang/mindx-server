@@ -26,7 +26,7 @@ const sendMail = async (options: EmailOptions): Promise<void> => {
 
     // gửi mail bằng resend
     const response = await resend.emails.send({
-      from: "onboarding@resend.dev", // resend email mặc định
+      from: "MindX <onboarding@resend.dev>",
       to: email,
       subject: subject,
       html: html,
