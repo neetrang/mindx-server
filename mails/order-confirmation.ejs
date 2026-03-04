@@ -1,187 +1,251 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Xác nhận đơn hàng MindX</title>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Xác nhận đơn hàng MindX</title>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        background-color: #f3f4f6;
-        font-family: "Inter", sans-serif;
-        color: #111827;
-      }
+<style>
 
-      .wrapper {
-        max-width: 600px;
-        margin: 40px auto;
-        background: #ffffff;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      }
+body{
+  margin:0;
+  padding:0;
+  background:#f3f4f6;
+  font-family:"Inter",sans-serif;
+  color:#111827;
+}
 
-      .header {
-        background: linear-gradient(135deg, #4f46e5, #6366f1);
-        padding: 32px;
-        text-align: center;
-        color: #ffffff;
-      }
+.wrapper{
+  max-width:620px;
+  margin:40px auto;
+  background:#ffffff;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 12px 30px rgba(0,0,0,0.06);
+}
 
-      .header h1 {
-        margin: 0;
-        font-size: 24px;
-        font-weight: 700;
-      }
+.header{
+  background:linear-gradient(135deg,#4f46e5,#6366f1);
+  padding:36px;
+  text-align:center;
+  color:white;
+}
 
-      .content {
-        padding: 32px;
-      }
+.logo{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:8px;
+}
 
-      .content p {
-        font-size: 15px;
-        line-height: 1.6;
-        margin: 0 0 16px;
-        color: #374151;
-      }
+.header h1{
+  font-size:22px;
+  margin:0;
+}
 
-      .card {
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        padding: 20px;
-        margin-top: 20px;
-      }
+.content{
+  padding:32px;
+}
 
-      .card h3 {
-        margin: 0 0 12px;
-        font-size: 18px;
-        font-weight: 600;
-        color: #111827;
-      }
+.content p{
+  font-size:15px;
+  line-height:1.6;
+  margin-bottom:16px;
+  color:#374151;
+}
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 14px;
-      }
+.card{
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  padding:20px;
+  margin-top:22px;
+}
 
-      td {
-        padding: 8px 0;
-      }
+.card h3{
+  margin:0 0 14px;
+  font-size:17px;
+  font-weight:600;
+}
 
-      .label {
-        color: #6b7280;
-      }
+table{
+  width:100%;
+  border-collapse:collapse;
+}
 
-      .value {
-        text-align: right;
-        font-weight: 500;
-      }
+td{
+  padding:8px 0;
+  font-size:14px;
+}
 
-      .total {
-        font-weight: 700;
-        font-size: 16px;
-      }
+.label{
+  color:#6b7280;
+}
 
-      .footer {
-        text-align: center;
-        padding: 24px;
-        background-color: #f9fafb;
-        font-size: 13px;
-        color: #6b7280;
-      }
+.value{
+  text-align:right;
+  font-weight:500;
+}
 
-      .footer a {
-        color: #4f46e5;
-        text-decoration: none;
-        font-weight: 500;
-      }
-    </style>
-  </head>
+.total{
+  font-size:16px;
+  font-weight:700;
+}
 
-  <body>
-    <div class="wrapper">
-      <!-- HEADER -->
-      <div class="header">
-        <h1>🎉 Đơn hàng đã được xác nhận!</h1>
-      </div>
+.divider{
+  border:none;
+  border-top:1px solid #e5e7eb;
+  margin:16px 0;
+}
 
-      <!-- CONTENT -->
-      <div class="content">
-        <p>Chào bạn 👋,</p>
+.button{
+  display:inline-block;
+  margin-top:24px;
+  background:#4f46e5;
+  color:white !important;
+  padding:12px 22px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
+}
 
-        <p>
-          Cảm ơn bạn đã tin tưởng và lựa chọn khóa học tại <strong>MindX</strong>.
-          Đơn hàng của bạn đã được thanh toán thành công và khóa học đã sẵn sàng
-          để bạn bắt đầu học ngay!
-        </p>
+.button:hover{
+  background:#4338ca;
+}
 
-        <!-- ORDER INFO -->
-        <div class="card">
-          <h3>Thông tin đơn hàng</h3>
+.footer{
+  background:#f9fafb;
+  text-align:center;
+  padding:24px;
+  font-size:13px;
+  color:#6b7280;
+}
 
-          <table>
-            <tr>
-              <td class="label">Mã đơn hàng</td>
-              <td class="value">#<%= order._id %></td>
-            </tr>
-            <tr>
-              <td class="label">Ngày mua</td>
-              <td class="value"><%= order.date %></td>
-            </tr>
-          </table>
-        </div>
+.footer a{
+  color:#4f46e5;
+  text-decoration:none;
+  font-weight:500;
+}
 
-        <!-- COURSE INFO -->
-        <div class="card">
-          <h3>Chi tiết khóa học</h3>
+</style>
+</head>
 
-          <table>
-            <tr>
-              <td class="label">Khóa học</td>
-              <td class="value"><%= order.name %></td>
-            </tr>
-            <tr>
-              <td class="label">Số lượng</td>
-              <td class="value">1</td>
-            </tr>
-            <tr>
-              <td class="label">Giá</td>
-              <td class="value"><%= order.price %></td>
-            </tr>
-          </table>
+<body>
 
-          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0" />
+<div class="wrapper">
 
-          <table>
-            <tr>
-              <td class="label total">Tổng cộng</td>
-              <td class="value total"><%= order.price %></td>
-            </tr>
-          </table>
-        </div>
+<!-- HEADER -->
 
-        <p style="margin-top: 24px">
-          👉 Bạn có thể truy cập khóa học ngay trong tài khoản MindX của mình.
-          Chúc bạn học tập hiệu quả và đạt được mục tiêu nhé! 🚀
-        </p>
-      </div>
+<div class="header">
 
-      <!-- FOOTER -->
-      <div class="footer">
-        <p>
-          Cần hỗ trợ? Liên hệ
-          <a href="support@mindx.edu.vn">support@mindx.edu.vn</a>
-        </p>
-        <p>© 2026 MindX. Bảo lưu mọi quyền.</p>
-      </div>
-    </div>
-  </body>
+<div class="logo">⚡ MindX</div>
+
+<h1>Đơn hàng đã được xác nhận</h1>
+
+</div>
+
+<!-- CONTENT -->
+
+<div class="content">
+
+<p>Chào bạn 👋,</p>
+
+<p>
+Cảm ơn bạn đã mua khóa học tại <strong>MindX</strong>.
+Thanh toán của bạn đã thành công và khóa học đã sẵn sàng để bắt đầu.
+</p>
+
+<!-- ORDER INFO -->
+
+<div class="card">
+
+<h3>Thông tin đơn hàng</h3>
+
+<table>
+
+<tr>
+<td class="label">Mã đơn hàng</td>
+<td class="value">#<%= order._id %></td>
+</tr>
+
+<tr>
+<td class="label">Ngày mua</td>
+<td class="value"><%= order.date %></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- COURSE INFO -->
+
+<div class="card">
+
+<h3>Chi tiết khóa học</h3>
+
+<table>
+
+<tr>
+<td class="label">Khóa học</td>
+<td class="value"><%= order.name %></td>
+</tr>
+
+<tr>
+<td class="label">Số lượng</td>
+<td class="value">1</td>
+</tr>
+
+<tr>
+<td class="label">Giá</td>
+<td class="value"><%= order.price %></td>
+</tr>
+
+</table>
+
+<hr class="divider"/>
+
+<table>
+
+<tr>
+<td class="label total">Tổng thanh toán</td>
+<td class="value total"><%= order.price %></td>
+</tr>
+
+</table>
+
+</div>
+
+<!-- CTA -->
+
+<center>
+
+<a class="button" href="https://mindx-client.vercel.app">
+Vào khóa học ngay
+</a>
+
+</center>
+
+<p style="margin-top:28px">
+Chúc bạn học tập hiệu quả và sớm đạt được mục tiêu của mình 🚀
+</p>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+<p>
+Cần hỗ trợ? Liên hệ
+<a href="mailto:support@mindx.edu.vn">support@mindx.edu.vn</a>
+</p>
+
+<p>© 2026 MindX Education</p>
+
+</div>
+
+</div>
+
+</body>
 </html>
