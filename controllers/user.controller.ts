@@ -50,7 +50,7 @@ export const registrationUser = CatchAsyncError(
     // ✅ TRẢ RESPONSE NGAY
     return res.status(201).json({
       success: true,
-      message: `Please check your email: ${user.email} to activate your account!`,
+      message: `Vui lòng kiểm tra email: ${user.email} để kích hoạt tài khoản!`,
       activationToken: activationToken.token,
     });
   }
